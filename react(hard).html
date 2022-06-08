@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vanilla JS</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      /* align-items: center; */
+    }
+    .plus-btn {
+      width: 100px;
+      height: 30px;
+      border-radius: 10px;
+    }
+    .plus-btn:hover {
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script>
+  const root = document.getElementById("root");
+  const span = React.createElement(
+      "span", 
+      { id: "my-span", style: {color: "red"}}, 
+      "Hello world"
+    );
+  ReactDOM.render(span, root);
+</script>
+</html>

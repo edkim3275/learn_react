@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vanilla JS</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      /* align-items: center; */
+    }
+    .plus-btn {
+      width: 100px;
+      height: 30px;
+      border-radius: 10px;
+    }
+    .plus-btn:hover {
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+  <!-- 1. HTML요소 만들기 -->
+  <button id="btn" class="plus-btn">plus</button>
+  <span>Total number : 0</span>
+
+  <script>
+    let counter = 0;
+    // 2. Javascript에서 요소 가져오기
+    const button = document.getElementById("btn");
+    const span = document.querySelector("span");
+    function handleClick() {
+      // 4. 데이터 업데이트
+      counter = counter + 1;
+      // 5. HTML 업데이트
+      span.innerText = `Total number : ${counter}`
+    }
+    // 3. event 감지
+    button.addEventListener("click", handleClick);
+  </script>
+</body>
+</html>
