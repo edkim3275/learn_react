@@ -71,3 +71,67 @@ React.js Element 생성하기(어려운 방법)
 </html>
 ```
 
+reactjs : interactive한 react element 생성
+
+reactDOM : react element를 HTML로 변경
+
+- JSX
+
+  `createElement`는 개발자들이 interactive한 요소를 보다 간편하게 만들기위해서 생겨났는데 이를 react에서 활용한 것이 바로 JSX.
+
+  HTML에서 활용하는 문법과 유사하게 코드를 작성하여 요소를 생성할 수 있다.
+
+  위의 경우와 아래의 경우는 같은코드
+
+  ```react
+  const title = React.createElement("h3", {onMouseEnter: () => console.log("I'm clicked!")}, "title");
+  
+  const Title = (
+  	<h3 onMouseEnter={() => console.log("I'm clicked!")}>
+      	title
+      </h3>
+  )
+  ```
+
+  바로 JSX를 사용할 경우 에러가 발생한다.
+
+  ![image-20220612225146584](React.assets/image-20220612225146584.png)
+
+  따라서, 아래의 코드를 위의 코드로 변환시켜야 함. 브라우저가 JSX를 이해할 수 있도록 뭔가를 설치해줘야만 한다. `Babel`
+
+- `Babel` : 코드를 변환해주는 녀석
+
+  JSX로 적은 코드를 브라우저가 이해할 수 있는 형태로 바꿔줌.(브라우저는 JSX를 모름)
+
+  혼자 할 경우 babel standalone을 설치해주자.([BABEL링크](https://babeljs.io/docs/en/babel-standalone))
+
+  ```react
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+  	...
+  </script>
+  ```
+
+- 컴포넌트를 다른 컴포넌트안에 어떻게 넣는가.
+
+  ```react
+  function Title() {
+      return (
+      	<h3>...</h3>
+      )
+  }
+  
+  const Button = () => (
+  	<button>...</button>
+  )
+  
+  const Container = (
+  	<div>
+      	<Title />
+          <Button />
+      </div>
+  )
+  ```
+
+  
+
