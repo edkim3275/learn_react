@@ -133,5 +133,25 @@ reactDOM : react element를 HTML로 변경
   )
   ```
 
-  
+- state
 
+  vanilla.js의 경우 state가 변경되면 html이 재렌더링 되면서 UI가 업데이트 되는 반면에 React.js의 경우 새 컴포넌트를 생성하느 것이 아니라 이전에 렌더링된 html과 변경된 html을 **비교하여 변경된 부분만 다시 렌더링**을 해준다.
+
+  ```react
+  const root = document.getElementById("root");
+  let counter = 0;
+  function countUp() {
+      counter = counter + 1;
+      render();
+  }
+  function render() {
+      ReactDOM.render(<App />, root)
+  }
+  const App = () => (
+  	<h3>Total Clicks : 0</h3>
+      <button onClick={countUp}>click me!</button>
+  )
+  render();
+  ```
+
+  react 어플 내에서 data를 저장하고, 자동으로 리렌더링을 일으킬 수 있는 방법.

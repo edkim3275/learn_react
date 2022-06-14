@@ -38,7 +38,6 @@
     </h3>
     )
   }
-    
   const Button = () => (
     <button style={{backgroundColor: "tomato"}} onClick={() => console.log("I'm clicked!")}>
       Click me
@@ -47,13 +46,18 @@
   // const btn = React.createElement("button", {
   //   onClick: () => console.log("I'm clicked")
   // }, "Click me");
-  const Container = (
-    <div>
-      <Title />
-      <Button />
-    </div>
-  )
+  
+  function App() {
+    const [counter, modifier] = React.useState(0);
+    console.log(counter);
+    return (
+      <div>
+        <h3 id="title" >Total clicks: 0</h3>
+        <button style={{backgroundColor: "tomato"}} >Click me</button>
+      </div>
+    )
+  }
   // const container = React.createElement("div", null, [Title, Button]);
-  ReactDOM.render(Container, root);
+  ReactDOM.render(<App />, root)
 </script>
 </html>
