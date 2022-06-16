@@ -155,3 +155,19 @@ reactDOM : react element를 HTML로 변경
   ```
 
   react 어플 내에서 data를 저장하고, 자동으로 리렌더링을 일으킬 수 있는 방법.
+
+- state 변경
+
+  - setCounter를 사용해서 counter를 변경하는 방법(직접 값을 설정해주기)
+
+    ```react
+    setCounter(counter + 1);
+    ```
+
+  - 이전 값을 이용해서 현재 값을 계산하는 방법(함수를 전달하기)
+
+    ```react
+    setCounter((current) => current + 1);
+    ```
+
+    현재 state를 바탕으로 다음 state를 계산하고 싶다면 아래 방법으로 하는 것이 보다 안전하다.(counter가 setCounter 외적으로 변경될 가능성이 있기 때문) 이게 현재 state를 주고, 예상치 못한 업데이트가 어디선가 일어났다고 해도, 혼동을 주는걸 방지해준다.
