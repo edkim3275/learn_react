@@ -111,3 +111,18 @@
 
   yarn설치가 되지 않았다면 `npm install react-router-dom`
 
+  1. **`<BrowserRouter>`**
+
+     React-Router를 시작하는 코드. Router를 적용할 때 항상 최상단에 위치하는 태그. 주로 import시에 `BrowserRouter as Router`를 통해 Router로 가져오곤 한다.
+
+  2. **`<Route>`**
+
+     BrowserRouter 태그 안에서 활용되는 태그로써, 이 태그는 반드시 BrowserRouter 태그 안에서만 작동한다. 이 태그는 경로를 설정해주는 코드. 3가지 속성이 있다.
+
+     - path : 주소를 의미. "/"라고 표기하면, React를 최초로 실행하였을 때 출력되는 페이지로 설정된다.
+     - component : 설정한 path의 경로로 이동하였을 때, 실행되는 컴포넌트를 설정
+     - exact : exact속성이 추가되면 설정한 경로와 '정확히 일치'해야 설정한 컴포넌트로 이동하게 된다.
+
+  3. **`<Switch>`**
+
+     Switch 태그는 모든 Router 요소들을 반복하면서, 현재 위치와 일치하는 첫 번째 요소만 렌더링 해주는 태그다. 경로가 동일한 컴포넌트들이 있거나, 매칭 되는 경로가 없을 때, 식별하는데 도움이 되는 태그다. 만약 매칭 되는 경로가 없다면 우리에게 익숙한 '404 Not Found' 오류 페이지가 나타나게 된다.
