@@ -125,4 +125,224 @@
 
   3. **`<Switch>`**
 
-     Switch 태그는 모든 Router 요소들을 반복하면서, 현재 위치와 일치하는 첫 번째 요소만 렌더링 해주는 태그다. 경로가 동일한 컴포넌트들이 있거나, 매칭 되는 경로가 없을 때, 식별하는데 도움이 되는 태그다. 만약 매칭 되는 경로가 없다면 우리에게 익숙한 '404 Not Found' 오류 페이지가 나타나게 된다.
+     Switch 태그는 모든 Router 요소들을 반복하면서, 현재 위치와 일치하는 첫 번째 요소만 렌더링 해주는 태그(경로가 적합한 처음 한 컴포넌트 찾아주는 태그)다. 경로가 동일한 컴포넌트들이 있거나, 매칭 되는 경로가 없을 때, 식별하는데 도움이 되는 태그다. 만약 매칭 되는 경로가 없다면 우리에게 익숙한 '404 Not Found' 오류 페이지가 나타나게 된다.
+
+  - Switch의 네이밍이 Routes로 변경되었다.
+
+    - exact 옵션 삭제
+
+    - component 방식 변경(`component={Main}` 및 `render{() => <h1>hello</h1>} `삭제)
+    - path를 기존의 `path="/Web/:id"` 에서 `path=":id"`로 상대경로로 지정
+    - 이 외에도 `path="."`, `path=".."` 등으로 상대경로를 표현
+
+  - v6방식
+
+    - 복수의 라우팅을 막기위해서 사용되었던 exact는 더이상 사용하지 않고 여러 라우팅을 매칭하고 싶은 경우 URL 뒤에 `*`을 사용
+
+      ```react
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Main />} />
+          <Route path="/page1/*" element={<Page1 />} />
+        </Routes>
+      </BrowserRouter>
+      ```
+
+    - component대신 element로 바로 컴포넌트를 전달
+
+  - 중첩 라우팅
+
+    - Router.js에서 중첩 라우터를 사용하고, 중첩 라우터에서 Outlet 컴포넌트 사용
+
+      ```react
+      // Router.js
+      <Routes>
+      	<Route path="web/*" element={<Web />} >
+              <Route path=":id" element={<WebPost />} />
+          </Route>
+      </Routes>
+          
+      // Web.js
+      import { Link, Outlet } from "react-router-dom";
+      const Web = () => {
+          return (
+          	<div>
+                  <ul>
+                  	<li>
+                          <Link to="1">Post #1</Link>
+                      </li>
+                  </ul>
+              	<Outlet />
+              </div>
+          )
+      }
+      ```
+
+      `Router.js`에서 자식 태그로 중첩하는 라우터를 기재하고, `Web.js`에서 `Outlet` 라이브러리를 통해 가져온다.
+
+    - 곧바로 사용
+
+      ```react
+      // Router.js
+      <Route path="web/*" element={<Web />} />
+      
+      // Web.js
+      const Web = () => {
+          return (
+          	<div>
+                  <ul>
+                  	<li>
+                          <Link to="1">Post #1</Link>
+                      </li>
+                  </ul>
+              	<Routes>
+                  	<Route path=":id" element={<WebPost />} />
+                  </Routes>
+              </div>
+          )
+      }
+      ```
+
+  - props 사용
+
+    - pathname 가져와 styled-components와 결합 - useLocation
+
+      ```react
+      import { Link, useLocation } from "react-router-dom"
+      const Header = () => {
+      	const { pathname } = useLocation();
+          return (
+          	<ul>
+              	<li selected={pathname.startsWith("/web")}>
+                  	<Link to="/web">go to web</Link>
+                  </li>
+              </ul>
+          )
+      }
+      ```
+
+    - `:id` path 이용하기 - useParams
+
+      ```react
+      import { useParams } from "react-router";
+      
+      const WebPost = () => {
+          const {id} = useParams();
+          return <div>#{id}번째 포스트</div>
+      }
+      
+      export default WebPost;
+      ```
+
+  - useRoutes
+
+    기존의 react-router-config가 useRoutes라는 Hook으로 변경 됨. 패키지를 추가로 설치해야했던 것과 달리 useRoutes라는 훅으로 routes를 구성할 수 있게 됨.
+
+    > react-router-config의 기본사용
+    >
+    > routes라는 배열에 사용할 컴포넌트를 할당하여 사용.
+    >
+    > child의 child도 정의 가능. 자식 컴포넌트들을 더 렌더링해야하는 경우에 renderRoutes를 사용하는데 이 때 전달되는 파라미터는 3가지
+    ```react
+    // react-router-config
+    // yarn add react-router-config로 설치 후에 사용
+    import { renderRoutes } from "react-router-config";
+    
+    const routes = [
+        {
+            component: Root,
+            routes: [
+                {
+                    path: "/",
+                    exact: true,
+                    component: Home
+                },
+                {
+                    path: "/child/:id",
+                    component: Child,
+                    routes: [
+                        {
+                            path: "/child/:id/grand-child",
+                            component: GrandChild
+                        }
+                    ]
+                }
+            ]
+        }
+    ];
+    
+    const Root = ({ route }) => (
+    	<div>
+            {/* 자식 라우트들이 렌더할 수 있도록  renderRoutes 실행 */}
+        	{renderRoutes(route.routes)}
+        </div>
+    )
+    
+    const Child = ({ route }) => (
+      <div>
+        {/*  renderRoutes가 없으면 자식들은 렌더되지 않음  */}
+        {renderRoutes(route.routes)}
+      </div>
+    );
+    
+    const GrandChild = ({ someProp }) => (
+      <div>
+        <div>{someProp}</div>
+      </div>
+    );
+    
+    ReactDOM.render(
+      <BrowserRouter>
+        {/* renderRoutes에 가장 처음 정의했던 routes 자체를 뿌려줌으로써 차례로 렌더링될 수 있도록 함 */}
+        {renderRoutes(routes)}
+      </BrowserRouter>,
+      document.getElementById("root")
+    );
+    ```
+    - useRoutes
+
+    ```react
+    function App() {
+        let element = useRoutes([
+            {path: "/", element: <Home />},
+            {
+                path: "invoices".
+                element: <Invoices />,
+                // 중첩 라우트의 경우도 Route에서와 같이 children이라는 property를 사용
+                children: [
+                	{ path: ":id", element: <Invoice /> },
+            		{ path: "sent", element: <SentInvoices /> }
+                ]
+            },
+            // NotFound 페이지는 다음과 같이 구현할 수 있음
+            { path: "*", element: <NotFound /> }
+        ]);
+    	// element를 return함으로써 적절한 계층으로 구성된 element가 렌더링 될 수 있도록 함
+    	return element;
+    }
+    ```
+
+    공식문서에서는 `<Routes>`와 `useRoutes`모두를 권장하고, 둘 중 자신이 더 선호하는 것을 사용하면 된다.
+
+  - useNavigate
+
+    이전에 사용되던 useHistory는 useNavigate로 대체
+
+    ```react
+    import { useNavigate } from "react-router-dom";
+    
+    function App() {
+        let navigate = useNavigate();
+        function handleClick() {
+            navigate("/home");
+        }
+        return (
+        	<div>
+            	<button onClick={handleClick}>home</button>
+            </div>
+        )
+    }
+    ```
+
+  - v6 참고링크 : https://velog.io/@soryeongk/ReactRouterDomV6
