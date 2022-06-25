@@ -35,9 +35,66 @@
   
   ```
 
-  
+- JavaScript로 맵 만들기(2차원 배열)
 
+  - `Array.from()`
 
+    유사 배열 객체(array-like object)나 반복 가능한 객체(iterable object)를 얕게 복사해 새로운 Array 객체를 만든다.
+
+    ```javascript
+    Array.from("foo") // ["f", "o", "o"]
+    Array.from([1,2,3], x => x + x) // [2, 4, 6]
+    ```
+
+  - 이를활용하여 2차원 배열을 만든다.
+
+    ```react
+    // 본래 시도한 방법
+    const createMap = () => {
+      const n = 11;
+      let mapLst = [];
+    
+      for (let i=0; i<n; i++) {
+        let line = [];
+        for (let j=0; j<n; j++) {
+          line.push(0)
+        }
+        mapLst.push(line);
+      }
+      mapLst[1][2] = 1; mapLst[4][5] = 1; mapLst[3][8] = 1;
+      return mapLst;
+    }
+    
+    // 참고한 방법
+    const MAP_WIDTH = 12;
+    const MAP_HEIGHT = 20;
+    const createMap = () => {
+        Array.from(Array(MAP_HEIGHT), () => 
+        	new Array.(MAP_WIDTH).fill([0, 'clear']) 
+        )
+    }
+    ```
+
+- 문자열에서 무작위 문자 뽑기
+
+  ```javascript
+  const string = 'ABCDEF';
+  // Math.floor(Math.random() * string.length)는 0 ~ 5까지의 수가 나오게 된다.
+  const randString = string[Math.floor(Math.random() * string.length)];
+  ```
+
+  - `Math.floor()` : 주어진 숫자와 같거나 작은 정수 중에서 가장 큰수를 반환
+
+  - `Math.random()` : 0이상 1미만의 구간에서 난수반환.
+
+    `Math.random()`은 암호학적으로 안전한 난수를 제공하지 않으므로, 보안과 관련된 어떤 것에도 이 함수를 사용하면 안 된다. 대신 Web Crypto API의 `window.crypto.getRandomValue()` 메소드를 이용하자.
+
+    출처 : https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+
+- 스타일 적용
+  - 어떤방식으로 스타일을 적용할 것인지??
+    - 스타일 컴포넌트
+    - css, scss
 
 ## 찾아볼 것
 
