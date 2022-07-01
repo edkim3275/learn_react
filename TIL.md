@@ -1,3 +1,5 @@
+# React_TIL
+
 - 노드 버전확인
 
   ```bash
@@ -95,6 +97,26 @@
   - 어떤방식으로 스타일을 적용할 것인지??
     - 스타일 컴포넌트
     - css, scss
+  
+- Move player through Map
+
+  ```javascript
+  window.addEventListener('keydown', (e) => {
+       
+  })
+  ```
+
+  
+
+## useEffect
+
+- the difference between providing no dependency array and an empty one
+
+  참고링크 : https://stackoverflow.com/questions/58579426/in-useeffect-whats-the-difference-between-providing-no-dependency-array-and-an
+
+  ![image-20220630161458314](TIL.assets/image-20220630161458314.png)
+
+
 
 ## 찾아볼 것
 
