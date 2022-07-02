@@ -422,16 +422,167 @@ type GreetingsPrps = {
     name: string;
     mark: string;
     optional?: string;
-    onClick: (name: string) => void;
+    onClick: (name: string) => void; // 아무것도 리턴하지 않는다는 함수를 의미
 }
 function Greetings({name, mark, optional, onClick}: GreetingsProps) {
     return (
     	{optional && <p>{optional}</p>}
     )
 }
+export default Greetings;
 ```
 
+그러면 App에서 해당 컴포넌트를 사용해야 할 때 다음과 같이 작성하면됩니다.
 
+```typescript
+const App = () => {
+    const onClick = (name: string) => {
+        console.log(`${name} says hello`);
+    };
+    return <Greetings name="Hello" onClick={onClick} />
+}
+```
+
+## 타입스크립트로 리액트 상태 관리하기
+
+### 카운터 만들어보기
+
+```typescript
+import React, {useState} from 'react';
+
+function Counter() {
+    const [count, setCount] = useState<number>(0);
+    const onIncreate = () => setCount((count) => count + 1);
+    const onDecrease = () => setCount((count) => count - 1);
+    return (
+    	<h1>{count}</h1>
+        <div>
+            <button onClick={onIncrease}>+1</button>
+            <button onClick={onDecrease}>-1</button>
+      	</div>
+    )
+}
+export default Counter;
+```
+
+TypeScript 없이 리액트 컴포넌트를 작성하는 것과 별반 차이가 없습니다. `useState`를 사용할 때 `useState<number>()`와 같이 Generics를 사용하여 **해당 상태가 어떤 타입을 가지고 있을지** 설정만 해주면 됩니다.
+
+그런데 참고로 `useState`를 사용할 때 Generics를 사용하지 않아도 알아서 타입을 유추하기 때문에 생략해도 상관없습니다.
+
+:alembic: 그렇다면 `useState` 를 사용 할 때 어떤 상황에 Generics를 사용하는게 좋을까요?
+
+바로, 상태가 `null`일 수도 있고 아닐수도 있을때 Generics를 활용하면 좋습니다.
+
+```typescript
+type Information = {name: string; description: string};
+const [info, setInfo] = useState<Information | null>(null);
+```
+
+### 인풋 상태 관리하기
+
+```typescript
+type MyFormProps = {
+    onSubmit: (form: {name: string, description: string}) => void;
+};
+
+function MyForm({onSubmit}: MyFormProps) {
+    const [form, setForm] = useState({
+        name: '',
+        description: ''
+    });
+    const {name, description} = form;
+    const onChange = (e: any) => {
+        // e 값을 무엇으로 설정해야할까요?
+        // 일단 모를때는 any로 설정
+    };
+    const handleSubmit = (e: any) => {
+        // 여기도 모르니까 any로 설정
+    };
+    return (
+    	<form onSubmit={handleSubmit}>
+          <input name="name" value={name} onChange={onChange} />
+          <input name="description" value={description} onChange={onChange} />
+          <button type="submit">등록</button>
+        </form>
+    )
+}
+```
+
+여기서 e 객체의 타입이 무엇일지 모르겠는데 e 객체의 타입이 무엇인지 외울필요 없고, 커서를 `onChange`에 올려보면 됩니다. 그 후에 그냥 마우스로 드래그해서 복사하면 됩니다.
+
+그러면 `onChange`의 e 객체의 타입을 `React.ChangeEvent<HTMLInputElement>`로 지정해서 구현을 하고, `onSubmit`도 마찬가지로 커서를 올리면 `React.FormEvent<HTMLFormElement>`를 e 객체 타입으로 지정해서 구현해보겠습니다.
+
+```typescript
+...
+function MyForm({onSubmit}: MyFormProps) {
+    ...
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        setForm({
+            ...form,
+            [name]: value
+        });
+    };
+    
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit(form);
+        setForm({
+            name: '',
+            description: '',
+        }); // 초기화
+    }
+}
+...
+```
+
+### useReducer 사용해보기
+
+```typescript
+import React, {useReducer} from 'react';
+
+type Action = { type: 'INCREASE'} | { type: 'DECREASE'}; // 이렇게 액션을 | 으로 연달아서 쭉 나열하세요
+
+function reducer(state: number, action: Action): number {
+    switch(action.type) {
+        case 'INCREASE':
+            return state + 1;
+        case 'DECREASE':
+            return state - 1;
+        default:
+            throw new Error('Unhandled action');
+    }
+}
+
+function Counter() {
+    const [count, dispatch] = useReducer(reducer, 0);
+    const onIncrease = () => dispatch({ type: 'INCREASE'});
+    const onDecrease = () => dispatch({ type: 'DECREASE'});
+    return (
+    	...
+    )
+}
+
+export default Counter;
+```
+
+지금은 액션들이 `type`값만 있어서 굉장히 간단하지만 액션 객체에 필요한 다른 값들이 있는 경우엔 다른 값들도 타입안에 명시를 해주면 추후 리듀서를 작성 할 때 자동완성도 되고 `dispatch`를 할 때 타입검사도 해줍니다.
+
+이를 확인해보기 위하여 다른 예시 컴포넌트를 만들어봅시다.
+
+```typescript
+import React, {useReducer} from 'react';
+
+type Color = 'red' | 'orange' | 'yellow'; // string[]
+type State = {
+    count: number;
+    text: string;
+    color: Color;
+    isGood: boolean;
+};
+type Action =
+	|
+```
 
 
 
