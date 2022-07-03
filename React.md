@@ -333,9 +333,17 @@ function User({age}) {
     }, [user])
     
     return (
-    	<div></div>
+        <>
+    		<button onClick={() => setDark(true)}></button>
+        	<input onChange={e => {
+                setName(e.target)
+            }}/>
+        	<Game user={user} />
+		</>
     )
 }
+
+export default React.memo(User); // React dev tool 현재 렌더링되는 컴포넌트를 하이라이트. 
 ```
 
 `useMemo`의 경우 array내부의 dependecies들이 변경되면 첫번째 인자에 들어가는 함수를 실행시키면서 새로운 값을 세팅하게된다.
@@ -494,3 +502,4 @@ function Todos({ initialTodos }) {
 이제 상단과 하단의 todo는 같은 객체를 참조하고 있다는 것을 확인할 수 있다.
 
 ![image-20220628150436202](React.assets/image-20220628150436202.png)
+
