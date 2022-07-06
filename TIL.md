@@ -98,6 +98,14 @@
     - 스타일 컴포넌트
     - css, scss
   
+- `keypress` vs. `keydown`
+
+  - 키보드 이벤트 작동 순서 : `keydown`  => `keypress`  => `keyup`
+    - 키보드를 누르면서 `keydown`이 작동하고, `keypress`로 지속적으로 눌려짐을 감지, 키보드에서 손이 떼어질 때 `keyup`이 작동
+  - `keypress`는 모든 키보드에 활성화 되지 않는다.
+    - 영어, 숫자, Enter, Space 네 가지를 감지한다.
+  - 따라서 player를 움직이는 로직은 `keydown`으로 작성하게 될 듯.
+
 - Move player through Map
 
   ```javascript
@@ -106,7 +114,7 @@
   })
   ```
 
-  
+
 
 ## useEffect
 

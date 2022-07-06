@@ -324,6 +324,8 @@ window.addEventListener("keydown", (e) => { // e: pre-populated object(it stands
 
 - `window.requestAnimationFrame()`
 
+  브라우저에게 수행하기를 원하는 애니메이션을 알리고 다음 리페인트가 진행되기 전에 해당 애니메이션을 업데이트하는 함수를 호출하게 된다.
+
   this takes one argument and it's going to be the function that you want to call recursively what function do we want to loop through over and over again to begin editing our object properties
 
   ![image-20220704101134547](C:\Users\edgar\AppData\Roaming\Typora\typora-user-images\image-20220704101134547.png)
