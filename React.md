@@ -49,7 +49,6 @@ HTML, CSS, JS 이해도 필요.
    </html>
    ```
 
-   
 
 ## Basic of React
 
@@ -502,4 +501,70 @@ function Todos({ initialTodos }) {
 이제 상단과 하단의 todo는 같은 객체를 참조하고 있다는 것을 확인할 수 있다.
 
 ![image-20220628150436202](React.assets/image-20220628150436202.png)
+
+## Project Setting
+
+- 사전 설치 : Node, npm, npx
+
+  Node.js 설치 : https://nodejs.org/en
+
+  npm 설치
+
+  ```bash
+  $ sudo npm install -g npm
+  ```
+
+  npx 설치
+
+  ```bash
+  $ npm install npx -g
+  ```
+
+  > :bulb: npm? npx?
+  >
+  > `npm`은 Node Package Manager의 약자로, Node.js 환경에서 패키지를 설치하고 관리하는 도구.
+  >
+  >  `npx`는 Node Package eXecute의 약자로, 로컬에 설치된 패키지를 실행할 때 사용됨. 일회성으로 필요한 도구나 스크립트를 간편하게 실행할 때 유용함.
+  >
+  > 즉, `npm`으로 패키지를 설치하고 관리하고, `npx`로 로컬에 설치된 패키지를 실행하는 것
+
+  create-react-app 설치
+
+  ```bash
+  $ npm install -g create-react-app
+  ```
+
+  여기서 `-g`는 해당 패키지를 전역(global)으로 설치하겠다는 옵션. 이는 해당 패키지를 현재 프로젝트뿐만 아니라 시스템 전체에서 사용할 수 있도록 설치하겠다는 의미가 된다.
+
+- 프로젝트 생성
+
+  ```bash
+  $ npx create-react-app <project_name> --template typescript
+  ```
+
+- 프로젝트 실행
+
+  생성한 프로젝트로 이동 후 실행한다
+
+  ```bash
+  $ cd <project_name>
+  $ yarn start
+  ```
+
+- sass 설치
+
+  ```bash
+  # yarn
+  $ yarn add node-sass
+  # npm
+  $ npm install node-sass
+  ```
+
+- react-router-dom 설치
+
+  ```bash
+  $ yarn add history@5 react-router-dom@6
+  ```
+
+  
 
